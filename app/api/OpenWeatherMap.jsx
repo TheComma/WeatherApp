@@ -5,19 +5,18 @@ const OPEN_WEATHER_MAP_URL = 'http://api.openweathermap.org/data/2.5/weather?&ap
 //0bccfcb43796b16d1f23b6d082a650f2
 
 module.exports = {
-  getTemp: function (location){
+  getTemp: function (location) {
     var encodedLocation = encodeURIComponent(location);
     var requestUrl = `${OPEN_WEATHER_MAP_URL}&q=${encodedLocation}`;
 
-    return axios.get(requestUrl).then(function(res){
-      if(res.data.cod && res.data.message){
+    return axios.get(requestUrl).then(function (res) {
+      if (res.data.cod && res.data.message) {
         throw new Error(res.data.message);
-      }
-      else {
+      } else {
         return res.data.main.temp;
       }
-    },function(res){
-      throw new Error(res.data.data);
+    }, function (err) {
+      throw new Error(err.response.data.message);
     });
   }
 }
